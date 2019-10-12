@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.uims.datamaintain.user.dao.UserInfoDao">
+
+    <sql id="tableName">
+        t_uims_user_info
+    </sql>
+
+    <insert id="insertOne"
+            parameterType="Alias_UserInfoDto"
+            useGeneratedKeys="true"
+            keyProperty="userId"
+            keyColumn="user_id">
+
+        insert into <include refid="tableName"/> (
+            user_id,
+            mobile_num,
+            mail,
+            create_time,
+            update_time,
+            full_name,
+            sex,
+            age,
+            id_num
+        ) values (
+            #{mobileNum,jdbcType=CHAR},
+            #{mail,jdbcType=VARCHAR},
+            #{createTime,jdbcType=DATE},
+            #{updateTime,jdbcType=DATE},
+            #{fullName,jdbcType=VARCHAR},
+            #{sex,jdbcType=INT},
+            #{age,jdbcType=INT},
+            #{idNum,jdbcType=CHAR}
+        )
+    </insert>
+</mapper>

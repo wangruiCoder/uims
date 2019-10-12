@@ -1,0 +1,21 @@
+server:
+  port: 8769
+
+spring:
+  application:
+    name: uims-config-server
+
+#----------------指定为引用本地目录---------------------#
+  profiles:
+    active: native
+
+#----------------本机公共配置文件引用目录----------------#
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: F:/ideaworkspace/uims/share
+
+eureka:
+  client:
+    eureka-server-u-r-l-context: http://localhost:8761/eureka/

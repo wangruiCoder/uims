@@ -1,0 +1,35 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.uims.datamaintain.user.dao.AccountDao">
+
+    <sql id="tableName">
+        t_uims_account
+    </sql>
+
+    <insert id="insertOne"
+            parameterType="Alias_AccountDto"
+            useGeneratedKeys="true"
+            keyProperty="accountId"
+            keyColumn="account_id">
+
+        insert into <include refid="tableName"/> (
+            account_flag,
+            account_name,
+            pass_word,
+            pass_salt,
+            create_time,
+            pass_edit_time,
+            last_login_time,
+            user_info_id
+        ) values (
+            #{accountFlag,jdbcType=TINYINT},
+            #{accountName,jdbcType=VARCHAR},
+            #{password,jdbcType=VARCHAR},
+            #{passSalt,jdbcType=VARCHAR},
+            #{createTime,jdbcType=DATE}
+            #{passEditTime,jdbcType=DATE}
+            #{lastLoginTime,jdbcType=DATE}
+        )
+    </insert>
+</mapper>

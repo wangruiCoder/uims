@@ -1,0 +1,23 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: uims-eureka-server
+  freemarker:
+    prefer-file-system-access: false
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    eureka-server-u-r-l-context: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    #-----关闭Eureka自我保护---------------------------#
+    enable-self-preservation: false
+    #-----Eureka 配置清理无效节点的时间间隔（单位：ms）-----#
+    eviction-interval-timer-in-ms: 60000
+
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--日志存储位置（读取配置文件的路径）-->
+    <!--<springProperty scope="context" name="log_dir" source="log.path"/>-->
+    <springProperty name="rabbitmqHost" source="spring.rabbitmq.host"/>
+    <springProperty name="rabbitmqPort" source="spring.rabbitmq.port"/>
+    <springProperty name="rabbitmqUsername" source="spring.rabbitmq.username"/>
+    <springProperty name="rabbitmqPassword" source="spring.rabbitmq.password"/>
+
+    <!-- 控制台日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) [%class:%line] %highlight(%-5level) - %cyan(%msg%n)
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <!-- 文件记录只记录指定包的日志 -->
+    <logger name="cn.kyrie" level="debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- FrameworkServlet日志-->
+    <logger name="org.springframework.web" level="trace">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <!-- mybatis日志打印-->
+    <logger name="org.apache.ibatis" level="DEBUG" />
+    <logger name="java.sql" level="DEBUG" />
+    <logger name="com.zaxxer.hikari" level="info">
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

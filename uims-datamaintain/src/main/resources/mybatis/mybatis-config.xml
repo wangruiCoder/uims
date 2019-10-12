@@ -1,0 +1,12 @@
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="cacheEnabled" value="false"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="org.uims.datamaintain.user.dto.AccountDto" alias="Alias_AccountDto"/>
+        <typeAlias type="org.uims.datamaintain.user.dto.UserInfoDto" alias="Alias_UserInfoDto"/>
+    </typeAliases>
+</configuration>

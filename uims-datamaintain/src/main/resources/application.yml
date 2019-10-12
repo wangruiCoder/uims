@@ -1,0 +1,87 @@
+#-----------启用eureka健康检查-------------#
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      #------向每个注册中心注册-----------------#
+      defaultZone:
+    #------关闭向eureka注册-------------------#
+    register-with-eureka: false
+    fetch-registry: false
+
+  instance:
+    #------续约更新时间（单位：s,默认30秒）-------#
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    #------需要到期时间（单位：s，默认90秒）------#
+    lease-expiration-duration-in-seconds: 30
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    #------外网链接的ip地址--------------------#
+    #ip-address: 127.0.0.1
+    hostname: ${spring.cloud.client.ip-address}
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: uims-datamaintain
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/uimsdb?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: mysql
+    hikari:
+      #此属性控制客户端（即您）将等待来自池的连接的最大毫秒数。如果在没有可用连接的情况下超过此时间，则会抛出SQLException。
+      #最低可接受的连接超时时间为250 ms。 默认值：30000（30秒）
+      connection-timeout: 20000
+      #该属性控制HikariCP尝试在池中维护的最小空闲连接数,默认值：与maximumPoolSize相同
+      minimum-idle: 5
+      #此属性控制池允许达到的最大大小，包括空闲和正在使用的连接默认值：10
+      maximum-pool-size: 10
+      pool-name: DatebookHikariCP
+      #此属性控制允许连接在池中闲置的最长时间。
+      #此设置仅适用于minimumIdle定义为小于maximumPoolSize。
+      #一旦池达到连接，空闲连接将不会退出minimumIdle。连接是否因闲置而退出，最大变化量为+30秒，平均变化量为+15秒。
+      #在超时之前，连接永远不会退出。值为0意味着空闲连接永远不会从池中删除。允许的最小值是10000ms（10秒）。 默认值：600000（10分钟）
+      idle-timeout: 300000
+      #此属性控制池中连接的最大生存期.应该比任何数据库或基础设施规定的连接时间限制短几秒,默认值：1800000（30分钟）
+      max-lifetime: 1200000
+      #此属性控制从池返回的连接的默认自动提交行为默认值：true
+      auto-commit: true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      connection-test-query: SELECT 1
+    type: com.zaxxer.hikari.HikariDataSource
+
+#-------------------boot admin 注册-------------------#
+  boot:
+    admin:
+      client:
+        url: http://localhost:8788
+        auto-registration: false
+
+  #------以下配置可以统一异常处理时处理404异常------------------------------#
+  #------以下配置只建议在前后端分离项目中使用，如果非前后端分离项目请使用uims-common中的NotFoundController-----#
+  #------spring.mvc.throw-exception-if-no-handler-found=true---------#
+  #------spring.resources.add-mappings=false-------------------------#
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+logging:
+  config: classpath:spring-logback.xml

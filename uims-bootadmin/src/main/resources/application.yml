@@ -1,0 +1,53 @@
+server:
+  port: 8788
+
+spring:
+  application:
+    name: uims-bootadmin
+  profiles:
+    active:
+    - secure
+  security:
+    user:
+      name: "admin"
+      password: "admin"
+
+
+#---------------------------eureka 配置---------------------------#
+eureka: #<1>
+  instance:
+    #------续约更新时间（单位：s,默认30秒）
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+      user.name: "admin"         #These two are needed so that the server
+      user.password: "admin" #can access the protected client endpoints
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    #------需要到期时间（单位：s，默认90秒）------#
+    lease-expiration-duration-in-seconds: 30
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    #------外网链接的ip地址------#
+    #ip-address: 127.0.0.1
+    hostname: ${spring.cloud.client.ip-address}
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    #------启用健康检查-----------------------#
+    healthcheck:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #<2>
+  endpoint:
+    health:
+      show-details: ALWAYS
+  # end::configuration-eureka[]
+
+
+
