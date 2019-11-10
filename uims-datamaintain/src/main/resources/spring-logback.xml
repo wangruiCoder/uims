@@ -24,7 +24,7 @@
     </logger>
 
     <!-- FrameworkServlet日志-->
-    <logger name="org.springframework.web" level="trace">
+    <logger name="org.springframework.web" level="info">
         <appender-ref ref="STDOUT"/>
     </logger>
     <!-- mybatis日志打印-->

@@ -33,7 +33,7 @@ spring:
     name: uims-datamaintain
 
   datasource:
-    url: jdbc:mysql://localhost:3306/uimsdb?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://localhost:3306/ccdcdb?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: mysql
     hikari:
