@@ -81,7 +81,7 @@ management:
         include: "*"
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
-  mapper-locations: classpath:mybatis/mapper/*.xml
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
 
 logging:
   config: classpath:spring-logback.xml

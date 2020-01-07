@@ -1,7 +1,5 @@
 package org.uims.common.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.uims.common.constant.CommonCodeEnum;
 import org.uims.common.exception.ApiException;
 import org.uims.common.result.Result;
+import org.uims.common.util.LogUtil;
 
 /**
  * 统一异常处理
@@ -18,7 +17,6 @@ import org.uims.common.result.Result;
 @ControllerAdvice
 @Component
 public class ControllerExceptionAdvice {
-    private static final Logger logger = LoggerFactory.getLogger(ControllerExceptionAdvice.class);
 
     /**
      * 处理除了自定义异常之外的异常
@@ -40,7 +38,7 @@ public class ControllerExceptionAdvice {
         /*
          * 出入异常信息跟造成异常的原因
          */
-        logger.error("error msg: {}, cause: {}", msg, ex.getCause());
+        LogUtil.getLogger(this.getClass()).error("error msg: {}, cause: {}", msg, ex.getCause());
 
         Result result = new Result(CommonCodeEnum.FAILED_CODE.getCode(), msg);
 
@@ -58,7 +56,7 @@ public class ControllerExceptionAdvice {
         /*
          * 出入异常信息跟造成异常的原因
          */
-        logger.error("error msg: {}, cause: {}", apiEx.getMessage(), apiEx.getCause());
+        LogUtil.getLogger(this.getClass()).error("error msg: {}, cause: {}", apiEx.getMessage(), apiEx.getCause());
 
         Result result = new Result(apiEx.getExpCode(), apiEx.getMessage());
 

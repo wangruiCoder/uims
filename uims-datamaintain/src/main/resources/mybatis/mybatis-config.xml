@@ -4,9 +4,10 @@
 <configuration>
     <settings>
         <setting name="cacheEnabled" value="false"/>
+        <setting name="logImpl" value="org.apache.ibatis.logging.slf4j.Slf4jImpl"/>
     </settings>
     <typeAliases>
         <typeAlias type="org.uims.datamaintain.user.dto.AccountDto" alias="Alias_AccountDto"/>
-        <typeAlias type="org.uims.datamaintain.user.dto.UserInfoDto" alias="Alias_UserInfoDto"/>
+        <typeAlias type="org.uims.datamaintain.user.dto.UserInfoDo" alias="Alias_UserInfoDto"/>
     </typeAliases>
 </configuration>

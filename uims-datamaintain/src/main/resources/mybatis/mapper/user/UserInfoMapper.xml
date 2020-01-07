@@ -3,35 +3,52 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.uims.datamaintain.user.dao.UserInfoDao">
 
+    <resultMap id="commonResultMap" type="Alias_UserInfoDto">
+        <result column="ID" property="id"/>
+        <result column="FULLNAME" property="fullName"/>
+        <result column="SEX" property="sex"/>
+        <result column="AGE" property="age"/>
+        <result column="JOB" property="job"/>
+        <result column="CREATE_TIME" property="createTime"/>
+    </resultMap>
+
     <sql id="tableName">
-        t_uims_user_info
+        t_user_info
+    </sql>
+
+    <sql id="columns">
+        ID,
+        FULLNAME,
+        SEX,
+        AGE,
+        JOB,
+        CREATE_TIME
     </sql>
 
     <insert id="insertOne"
             parameterType="Alias_UserInfoDto"
             useGeneratedKeys="true"
-            keyProperty="userId"
-            keyColumn="user_id">
+            keyProperty="id"
+            keyColumn="ID">
 
         insert into <include refid="tableName"/> (
-            user_id,
-            mobile_num,
-            mail,
-            create_time,
-            update_time,
-            full_name,
-            sex,
-            age,
-            id_num
+            ID,
+            FULLNAME,
+            SEX,
+            AGE,
+            JOB,
+            CREATE_TIME
         ) values (
-            #{mobileNum,jdbcType=CHAR},
-            #{mail,jdbcType=VARCHAR},
-            #{createTime,jdbcType=DATE},
-            #{updateTime,jdbcType=DATE},
+            #{id,jdbcType= INTEGER},
             #{fullName,jdbcType=VARCHAR},
-            #{sex,jdbcType=INT},
-            #{age,jdbcType=INT},
-            #{idNum,jdbcType=CHAR}
+            #{sex,jdbcType=INTEGER},
+            #{age,jdbcType=INTEGER},
+            #{job,jdbcType=VARCHAR},
+            getDbTime()
         )
     </insert>
+
+    <select id="getListPage" resultMap="commonResultMap" parameterType="Map">
+        select <include refid="columns"/> from <include refid="tableName"/> LIMIT #{startNo} , #{endNo}
+    </select>
 </mapper>
