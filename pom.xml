@@ -29,6 +29,7 @@
         <org-jolokia.version>1.6.2</org-jolokia.version>
         <servlet-api.version>4.0.1</servlet-api.version>
         <poi.version>4.1.1</poi.version>
+        <io.netty.version>4.0.56.Final</io.netty.version>
     </properties>
 
     <modules>
@@ -162,6 +163,11 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-scratchpad</artifactId>
                 <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${io.netty.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
