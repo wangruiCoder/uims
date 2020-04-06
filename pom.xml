@@ -39,6 +39,7 @@
         <module>uims-bootadmin</module>
         <module>uims-common</module>
         <module>uims-gateway</module>
+        <module>uims-tools</module>
     </modules>
 
     <dependencyManagement>
