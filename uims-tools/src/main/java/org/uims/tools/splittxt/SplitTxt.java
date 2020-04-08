@@ -2,10 +2,10 @@ package org.uims.tools.splittxt;
 
 import org.uims.common.util.LogUtil;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,28 +17,28 @@ import java.util.Map;
  *
  */
 public class SplitTxt {
-    private int batchSize = 50000;
-    private final String REPLACE_OLD_STR = "|+|";
+    private int batchSize = 1024*1024*5;
+    private final String REPLACE_OLD_STR = "|";
     private final String REPLACE_NEW_STR = ",";
     private final String FILE_PATH = "F:/test";
-    private final int COLUMN_NO = 4;
+    private final int COLUMN_NO = 1;
     private Map<String,RandomAccessFile> filesMap= new HashMap<>();
 
     public void splitFile(File file){
         long startPointer = 0L;
         RandomAccessFile raf = null;
+        long startTime = System.currentTimeMillis();
         try {
+
             raf = new RandomAccessFile(file,"r");
             while (true){
-                long startTime = System.currentTimeMillis();
+
                 Map<String,Object> result = this.splitBatch(raf,startPointer,0L,batchSize);
                 if (result.isEmpty()){
                     break;
                 }
-                long endTime = System.currentTimeMillis();
-                System.out.println("获取第一批数据耗时："+(endTime-startTime)/1000+"s");
 
-                long startTime1 = System.currentTimeMillis();
+
                 List<java.lang.String> lines = new ArrayList<>(50000);
                 lines = (List<String>) result.get("lines");
                 for(String item : lines){
@@ -46,8 +46,7 @@ public class SplitTxt {
                 }
 
                 startPointer = (long) result.get("nextBatchStartPointer");
-                long endTime1 = System.currentTimeMillis();
-                System.out.println("处理第一批数据耗时"+(endTime1-startTime1)/1000+"s");
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -58,8 +57,8 @@ public class SplitTxt {
                 e.printStackTrace();
             }
         }
-
-
+        long endTime1 = System.currentTimeMillis();
+        System.out.println("处理数据耗时："+(endTime1-startTime)/1000+"s");
 
     }
 
@@ -71,8 +70,6 @@ public class SplitTxt {
         try {
             file.seek(file.length());
             file.write(replaceStr.getBytes());
-            file.write(13);
-            file.write(10);
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
@@ -121,18 +118,44 @@ public class SplitTxt {
         Map<String,Object> batchResult = new HashMap<>();
         List<String> lines = new ArrayList<>(1000);
 
+
         try {
             long fileLength = raf.length();
             if (startPointer < fileLength){
-                raf.seek(startPointer);
-                for (int i=0;i<batchSize;i++){
-                    //if (raf.getFilePointer() < fileLength){
-                        lines.add(new String(raf.readLine().getBytes("ISO-8859-1"),"GBK"));
-                    /*}else{
+                //raf.seek(startPointer);
+                long endPointor = (startPointer+batchSize) >= fileLength ? fileLength : startPointer+batchSize ;
+
+                raf.seek(endPointor);
+                while (endPointor < fileLength){
+                    if((raf.readByte() == 10 || raf.readByte() == 13)){
+                        endPointor = raf.getFilePointer();
                         break;
-                    }*/
+                    }
                 }
-                batchResult.put("nextBatchStartPointer",raf.getFilePointer());
+
+
+                int byteLength = (int) (endPointor-startPointer);
+                byte[] bytes = new byte[byteLength];
+
+                raf.seek(startPointer);
+
+                raf.read(bytes,0,byteLength);
+
+                //MappedByteBuffer mappedByteBuffer = raf.getChannel().map(FileChannel.MapMode.READ_ONLY,startPointer,byteLength);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+                for (int i=0;i<byteLength;i++){
+                    byte temp = bytes[i];
+                    if((temp == '\n' || temp == '\r') && bos.size()>1){
+                        lines.add(new String(bos.toByteArray(),"UTF-8"));
+                        bos.flush();
+                        bos.reset();
+                    }else{
+                        bos.write(temp);
+                    }
+                }
+
+                batchResult.put("nextBatchStartPointer",endPointor);
                 batchResult.put("lines",lines);
             }
         } catch (IOException e) {

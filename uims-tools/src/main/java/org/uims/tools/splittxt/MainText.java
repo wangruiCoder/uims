@@ -10,7 +10,7 @@ import java.util.Map;
 public class MainText {
     public static void main(String[] args) throws UnsupportedEncodingException {
         SplitTxt splitTxt = new SplitTxt();
-        File file = new File("F:\\test\\A0020.PRI");
+        File file = new File("F:\\test\\test.csv");
         splitTxt.splitFile(file);
 
         /*try {
