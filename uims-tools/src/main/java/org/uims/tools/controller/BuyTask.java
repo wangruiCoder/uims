@@ -7,13 +7,17 @@ public class BuyTask implements Runnable {
 
     private String threadName;
     private List<String> array = new ArrayList<>();
-    public BuyTask(String threadName,List<String> array){
+    public BuyTask(String threadName){
         this.threadName = threadName;
-        this.array = array;
     }
 
     @Override
     public void run() {
-        System.out.println(array.size());
+        try {
+            Thread.sleep(3000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("split task");
     }
 }

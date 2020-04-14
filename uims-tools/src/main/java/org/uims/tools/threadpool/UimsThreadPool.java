@@ -19,7 +19,7 @@ public class UimsThreadPool {
                 threadPoolConfig.getMaxPoolSize(), threadPoolConfig.getKeepAliveSeconds(), TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(threadPoolConfig.getQueueCapacity()));
 
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
 
         return executor;
     }

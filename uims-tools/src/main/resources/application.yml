@@ -10,7 +10,7 @@ logging:
 
 report:
   pool:
-    corePoolSize: 5
-    maxPoolSize: 15
+    corePoolSize: 2
+    maxPoolSize: 3
     keepAliveSeconds: 60
-    queueCapacity: 50
+    queueCapacity: 5
