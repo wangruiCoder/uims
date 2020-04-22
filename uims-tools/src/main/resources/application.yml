@@ -10,7 +10,8 @@ logging:
 
 report:
   pool:
+    autoSetCorePool : true
     corePoolSize: 2
     maxPoolSize: 3
     keepAliveSeconds: 60
-    queueCapacity: 5
+    queueCapacity: 500

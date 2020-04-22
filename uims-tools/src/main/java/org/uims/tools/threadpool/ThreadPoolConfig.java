@@ -4,10 +4,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "report.pool")
 public class ThreadPoolConfig {
+    private boolean autoSetCorePool = true;
     private int corePoolSize;
     private int maxPoolSize;
     private int keepAliveSeconds;
     private int queueCapacity;
+
+    public boolean isAutoSetCorePool() {
+        return autoSetCorePool;
+    }
+
+    public void setAutoSetCorePool(boolean autoSetCorePool) {
+        this.autoSetCorePool = autoSetCorePool;
+    }
 
     public int getCorePoolSize() {
         return corePoolSize;
