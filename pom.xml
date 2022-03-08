@@ -28,7 +28,7 @@
         <mybatis-spring.version>2.0.1</mybatis-spring.version>
         <org-jolokia.version>1.6.2</org-jolokia.version>
         <servlet-api.version>4.0.1</servlet-api.version>
-        <poi.version>4.1.1</poi.version>
+        <poi.version>5.2.1</poi.version>
         <io.netty.version>4.0.56.Final</io.netty.version>
     </properties>
 
